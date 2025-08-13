@@ -1,0 +1,21 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+
+metadata:
+  name: nginx
+
+servers: 1
+agents: 3
+
+image: docker.io/rancher/k3s:v1.31.5-k3s1
+network: nginx-network
+
+ports:
+  - port: 8083:80
+    nodeFilters:
+      - loadbalancer
+
+options:
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: false
