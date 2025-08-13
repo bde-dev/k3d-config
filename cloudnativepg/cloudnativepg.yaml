@@ -1,0 +1,26 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+
+metadata:
+  name: cloudnativepg
+
+servers: 1
+agents: 3
+
+image: docker.io/rancher/k3s:v1.31.5-k3s1
+network: cloudnativepg-network
+
+ports:
+  - port: 8081:80
+    nodeFilters:
+      - loadbalancer
+
+files:
+  - description: "cloudnativepg operator installation manifest"
+    source: ./cloudnativepg-operator.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/cloudnativepg-operator.yaml
+
+options:
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: false
