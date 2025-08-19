@@ -4,9 +4,6 @@ kind: Simple
 metadata:
   name: nginx
 
-servers: 1
-agents: 3
-
 image: docker.io/rancher/k3s:v1.31.5-k3s1
 network: nginx-network
 
