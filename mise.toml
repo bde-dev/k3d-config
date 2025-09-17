@@ -1,0 +1,3 @@
+[tools]
+kubectl = "latest"
+k3d = "latest"
