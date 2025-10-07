@@ -1,3 +1,6 @@
 [tools]
 kubectl = "latest"
 k3d = "latest"
+helm = "latest"
+lazygit = "latest"
+k9s = "latest"
