@@ -1,0 +1,27 @@
+#!/bin/bash
+
+HARBOR_URL=localhost:8090
+HARBOR_ADMIN_USERNAME=admin
+HARBOR_ADMIN_PASSWORD=Harbor12345
+
+curl --request POST -u $HARBOR_ADMIN_USERNAME:$HARBOR_ADMIN_PASSWORD \
+  --url $HARBOR_URL/api/v2.0/registries \
+  --header 'content-type: application/json' \
+  --data '{
+                         "name": "remote-registry",
+                         "url": "https://remote-registry.io",
+                         "insecure": false,
+                         "type": "harbor",
+                         "description": "harbor"
+                       }'
+
+REGISTRY_ID=$(curl -X GET -u $HARBOR_ADMIN_USERNAME:$HARBOR_ADMIN_PASSWORD --url "$HARBOR_URL/api/v2.0/registries?page=1&page_size=10" --header 'accept: application/json' | jq -r ".[].id")
+
+curl --request POST -u $HARBOR_ADMIN_USERNAME:$HARBOR_ADMIN_PASSWORD \
+  --url $HARBOR_URL/api/v2.0/projects \
+  --header 'content-type: application/json' \
+  --data '{
+                         "project_name": "remote-registry-proxy",
+                         "public": false,
+                         "registry_id": '$REGISTRY_ID'
+                       }'

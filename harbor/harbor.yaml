@@ -1,0 +1,31 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+
+metadata:
+  name: harbor
+
+image: docker.io/rancher/k3s:v1.31.5-k3s1
+network: harbor-network
+
+ports:
+  - port: 4004:80
+    nodeFilters:
+      - loadbalancer
+
+files:
+  - description: "Harbor namespace"
+    source: ./namespace.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/namespace.yaml
+
+  - description: "harbor installation manifest"
+    source: ./harbor-install.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/harbor-install.yaml
+
+  - description: "harbor ingress"
+    source: ./ingress.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/ingress.yaml
+
+options:
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: false

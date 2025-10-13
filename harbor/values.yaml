@@ -1,0 +1,4 @@
+expose:
+  type: clusterIP
+  tls:
+    enabled: false
