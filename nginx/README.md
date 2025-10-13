@@ -1,3 +1,3 @@
 # NGINX
 
-This environment sets up a basic nginx deployment and service that can be port-forwarded.
+This environment sets up a basic nginx deployment, service and ingress.

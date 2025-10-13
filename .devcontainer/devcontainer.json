@@ -8,6 +8,27 @@
   },
   "postCreateCommand": "scripts/setup",
   "forwardPorts": [
-    8090
-  ]
+    4001,
+    4002,
+    4003,
+    4004,
+    4005
+  ],
+  "portsAttributes": {
+    "4001": {
+      "label": "nginx"
+    },
+    "4002": {
+      "label": "cloudnative-pg"
+    },
+    "4003": {
+      "label": "cilium"
+    },
+    "4004": {
+      "label": "harbor"
+    },
+    "4005": {
+      "label": "otel-sandbox"
+    }
+  }
 }

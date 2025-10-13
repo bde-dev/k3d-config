@@ -12,7 +12,7 @@ image: docker.io/rancher/k3s:v1.31.5-k3s1
 network: cilium-cni-ingress-network
 
 ports:
-  - port: 8082:80
+  - port: 4003:80
     nodeFilters:
       - loadbalancer
 

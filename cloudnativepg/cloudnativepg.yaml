@@ -11,7 +11,7 @@ image: docker.io/rancher/k3s:v1.31.5-k3s1
 network: cloudnativepg-network
 
 ports:
-  - port: 8081:80
+  - port: 4002:80
     nodeFilters:
       - loadbalancer
 

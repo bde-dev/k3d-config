@@ -8,9 +8,22 @@ image: docker.io/rancher/k3s:v1.31.5-k3s1
 network: nginx-network
 
 ports:
-  - port: 8083:80
+  - port: 4001:80
     nodeFilters:
       - loadbalancer
+
+files:
+  - description: "nginx deployment"
+    source: ./deployment.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/deployment.yaml
+
+  - description: "nginx service"
+    source: ./service.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/service.yaml
+
+  - description: "nginx ingress"
+    source: ./ingress.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/ingress.yaml
 
 options:
   kubeconfig:
