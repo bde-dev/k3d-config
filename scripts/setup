@@ -2,7 +2,6 @@
 
 /usr/local/bin/mise trust /workspaces/$DEVPOD_WORKSPACE_ID/mise.toml && /usr/local/bin/mise install
 
-/home/vscode/.local/share/mise/installs/helm/3.19.0/linux-amd64/helm repo add harbor https://helm.goharbor.io
-/home/vscode/.local/share/mise/installs/helm/3.19.0/linux-amd64/helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-
-/home/vscode/.local/share/mise/installs/helm/3.19.0/linux-amd64/helm repo update
+/usr/local/bin/mise exec helm -- helm repo add harbor https://helm.goharbor.io
+/usr/local/bin/mise exec helm -- helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+/usr/local/bin/mise exec helm -- helm repo update
