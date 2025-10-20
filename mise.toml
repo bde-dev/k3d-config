@@ -1,7 +1,9 @@
 [tools]
 kubectl = "latest"
+kubectx = "latest"
 k3d = "latest"
 helm = "latest"
 lazygit = "latest"
 k9s = "latest"
-kubectx = "latest"
+cilium-cli = "latest"
+cilium-hubble = "latest"
