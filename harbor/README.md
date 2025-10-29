@@ -8,6 +8,6 @@ This environment spins up a basic `harbor` instance with as little configuration
 helm template harbor harbor/harbor --namespace harbor --create-namespace --values values.yaml > harbor-install.yaml
 ```
 
-Frontend accessible on [[http://localhost:8090]]
+Frontend accessible on [[http://localhost:4004]]
 
 > To get the basic demo working, TLS has been disabled.

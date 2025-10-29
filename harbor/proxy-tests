@@ -1,0 +1,25 @@
+#!/bin/bash
+HARBOR_URL="localhost:4004"
+
+test_pull() {
+  local image=$1
+  echo "Testing: ${image}"
+  if docker pull ${image}; then
+    echo "✓ Success: ${image}"
+    docker rmi ${image} >/dev/null 2>&1 # Clean up
+  else
+    echo "✗ Failed: ${image}"
+    return 1
+  fi
+  echo ""
+}
+
+echo "=== Testing Harbor Proxy Caches ==="
+echo ""
+
+test_pull "${HARBOR_URL}/dockerhub-proxy/library/nginx:alpine"
+test_pull "${HARBOR_URL}/ghcr-proxy/fluxcd/flux-cli:latest"
+test_pull "${HARBOR_URL}/quay-proxy/prometheus/prometheus:latest"
+test_pull "${HARBOR_URL}/k8s-proxy/pause:3.9"
+
+echo "=== Test Complete ==="
