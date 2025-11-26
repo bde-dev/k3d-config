@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Configuration
-HARBOR_URL="${HARBOR_URL:-http://localhost:4004}"
+HARBOR_URL="${HARBOR_URL:-https://localhost:4004}"
 HARBOR_USER="${HARBOR_USER:-admin}"
 HARBOR_PASSWORD="${HARBOR_PASSWORD:-Harbor12345}"
 
@@ -45,7 +45,7 @@ log_info "Waiting for Harbor to be ready at ${HARBOR_URL}..."
 MAX_RETRIES=30
 RETRY_COUNT=0
 
-until curl -sf "${HARBOR_URL}/api/v2.0/systeminfo" >/dev/null; do
+until curl -sfk "${HARBOR_URL}/api/v2.0/systeminfo" >/dev/null; do
   RETRY_COUNT=$((RETRY_COUNT + 1))
   if [[ ${RETRY_COUNT} -ge ${MAX_RETRIES} ]]; then
     log_error "Harbor failed to become ready after ${MAX_RETRIES} attempts"
@@ -67,7 +67,7 @@ create_registry() {
   log_info "Creating registry endpoint: ${name}"
 
   local response
-  response=$(curl -vvv -s -w "\n%{http_code}" -X POST "${HARBOR_URL}/api/v2.0/registries" \
+  response=$(curl -vvv -s -w "\n%{http_code}" -X POST "${HARBOR_URL}/api/v2.0/registries" --location --insecure \
     -u "${HARBOR_USER}:${HARBOR_PASSWORD}" \
     -H "Content-Type: application/json" \
     -d "{
@@ -78,8 +78,13 @@ create_registry() {
       \"insecure\": false
     }")
 
+  log_info "response: $response"
+
   local http_code=$(echo "$response" | tail -n1)
   local body=$(echo "$response" | sed '$d')
+
+  log_info "http_code: $http_code"
+  log_info "body: $body"
 
   if [[ ${http_code} -eq 201 ]]; then
     log_info "✓ Registry ${name} created successfully"
@@ -102,14 +107,14 @@ create_proxy_project() {
   log_info "Creating proxy cache project: ${project_name}"
 
   local response
-  response=$(curl -v -s -w "\n%{http_code}" -X POST "${HARBOR_URL}/api/v2.0/projects" \
+  response=$(curl -v -s -w "\n%{http_code}" -X POST "${HARBOR_URL}/api/v2.0/projects" --location --insecure \
     -u "${HARBOR_USER}:${HARBOR_PASSWORD}" \
     -H "Content-Type: application/json" \
     -d "{
       \"project_name\": \"${project_name}\",
       \"registry_id\": ${registry_id},
       \"metadata\": {
-        \"public\": \"false\"
+        \"public\": \"true\"
       },
       \"storage_limit\": -1
     }")
@@ -135,7 +140,7 @@ get_registry_id() {
   local name=$1
   local registry_id
 
-  registry_id=$(curl -sf "${HARBOR_URL}/api/v2.0/registries" \
+  registry_id=$(curl -sfk "${HARBOR_URL}/api/v2.0/registries" \
     -u "${HARBOR_USER}:${HARBOR_PASSWORD}" |
     jq -r ".[] | select(.name==\"${name}\") | .id")
 

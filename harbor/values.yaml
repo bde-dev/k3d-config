@@ -2,3 +2,6 @@ expose:
   type: clusterIP
   tls:
     enabled: false
+    certSource: none
+
+externalURL: https://localhost

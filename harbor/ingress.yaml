@@ -3,9 +3,13 @@ kind: Ingress
 metadata:
   name: harbor
   namespace: harbor
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned-cluster-issuer
 spec:
+  ingressClassName: traefik # k3s default
   rules:
-    - http:
+    - host: localhost
+      http:
         paths:
           - path: /
             pathType: Prefix
@@ -14,3 +18,7 @@ spec:
                 name: harbor
                 port:
                   number: 80
+  tls:
+    - secretName: harbor-tls
+      hosts:
+        - localhost

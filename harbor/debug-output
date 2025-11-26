@@ -1,0 +1,12 @@
+#!/bin/bash
+
+bat proxy-tests
+./proxy-tests
+
+bat --pager=never ./harbor-cert.yaml ./harbor-issuer.yaml ./harbor.yaml ./values.yaml ./test-ingress.yaml
+
+docker login localhost:4004 --username admin --password Harbor12345
+
+curl -vkL localhost:4004/v2
+
+kubectl logs -n harbor release-name-harbor-nginx-7489b687ff-cgg7c | head -n 10

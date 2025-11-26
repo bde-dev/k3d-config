@@ -8,7 +8,7 @@ image: docker.io/rancher/k3s:v1.31.5-k3s1
 network: harbor-network
 
 ports:
-  - port: 4004:80
+  - port: 4004:443
     nodeFilters:
       - loadbalancer
 
@@ -24,6 +24,18 @@ files:
   - description: "harbor ingress"
     source: ./ingress.yaml
     destination: /var/lib/rancher/k3s/server/manifests/ingress.yaml
+
+  - description: "cert-manager installation manifest"
+    source: ./cert-manager.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/cert-manager.yaml
+
+  - description: "cert-manager cluster issuer"
+    source: ./harbor-issuer.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/harbor-issuer.yaml
+
+  - description: "cert-manager harbor cert"
+    source: ./harbor-cert.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/./harbor-cert.yaml
 
 options:
   kubeconfig:

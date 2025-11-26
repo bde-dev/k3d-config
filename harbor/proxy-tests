@@ -17,9 +17,9 @@ test_pull() {
 echo "=== Testing Harbor Proxy Caches ==="
 echo ""
 
-test_pull "${HARBOR_URL}/dockerhub-proxy/library/nginx:alpine"
-test_pull "${HARBOR_URL}/ghcr-proxy/fluxcd/flux-cli:latest"
-test_pull "${HARBOR_URL}/quay-proxy/prometheus/prometheus:latest"
+test_pull "${HARBOR_URL}/dockerhub-proxy/library/hello-world:latest"
+test_pull "${HARBOR_URL}/ghcr-proxy/jonashackt/hello-world:latest"
+test_pull "${HARBOR_URL}/quay-proxy/prometheus/busybox:latest"
 test_pull "${HARBOR_URL}/k8s-proxy/pause:3.9"
 
 echo "=== Test Complete ==="
