@@ -37,6 +37,9 @@ files:
     source: ./harbor-cert.yaml
     destination: /var/lib/rancher/k3s/server/manifests/./harbor-cert.yaml
 
+registries:
+  config: ../registries.yaml
+
 options:
   kubeconfig:
     updateDefaultKubeconfig: true

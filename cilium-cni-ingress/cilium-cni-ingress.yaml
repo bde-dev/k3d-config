@@ -16,6 +16,9 @@ ports:
     nodeFilters:
       - loadbalancer
 
+registries:
+  config: ../registries.yaml
+
 options:
   k3s:
     extraArgs:

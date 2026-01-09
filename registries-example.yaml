@@ -1,0 +1,21 @@
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://registry.example.com/v2/dockerhub"
+  ghcr.io:
+    endpoint:
+      - "https://registry.example.com/v2/ghcr"
+  quay.io:
+    endpoint:
+      - "https://registry.example.com/v2/quay"
+  registry.k8s.io:
+    endpoint:
+      - "https://registry.example.com/v2/k8s"
+  mcr.microsoft.com:
+    endpoint:
+      - "https://registry.example.com/v2/mcr"
+configs:
+  "registry.example.com":
+    auth:
+      username: <example-username>
+      password: <example-password>

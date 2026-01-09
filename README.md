@@ -26,6 +26,27 @@ This avoids traffic conflicts if there are multiple environments running at once
 
 It also allows host browser access to web apps and UI's running in the containers via `ingress` resources.
 
+## Private Registries
+
+Clusters can optionally be configured to pull images from private registries or registry mirrors. Each environment references a `registries.yaml` file at the repo root.
+
+**To use private registries:**
+
+1. Copy `registries-example.yaml` to `registries.yaml`
+2. Update the endpoints and credentials with your registry details
+3. The `registries.yaml` file is gitignored to prevent committing credentials
+
+**To use public registries only:**
+
+Remove the `registries` block from the environment's k3d config file:
+
+```yaml
+registries:
+  config: ../registries.yaml
+```
+
+See the [k3d registries documentation](https://k3d.io/v5.7.5/usage/registries/) for more details.
+
 ## Devpod
 
 A `devcontainer` spec is available, using `docker-in-docker` to be bale to run the `k3d` clusters inside the `devcontainer`.

@@ -20,6 +20,9 @@ files:
     source: ./cloudnativepg-operator.yaml
     destination: /var/lib/rancher/k3s/server/manifests/cloudnativepg-operator.yaml
 
+registries:
+  config: ../registries.yaml
+
 options:
   kubeconfig:
     updateDefaultKubeconfig: true

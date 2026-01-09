@@ -25,6 +25,9 @@ files:
     source: ./ingress.yaml
     destination: /var/lib/rancher/k3s/server/manifests/ingress.yaml
 
+registries:
+  config: ../registries.yaml
+
 options:
   kubeconfig:
     updateDefaultKubeconfig: true
