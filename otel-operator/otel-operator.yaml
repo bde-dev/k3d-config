@@ -1,0 +1,41 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+
+metadata:
+  name: otel-operator
+
+image: docker.io/rancher/k3s:v1.31.5-k3s1
+network: otel-operator-network
+
+ports:
+  - port: 4005:80
+    nodeFilters:
+      - loadbalancer
+
+files:
+  - description: "otel namespace"
+    source: ./namespace.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/namespace.yaml
+  - description: "otel-operator installation manifest"
+    source: ./otel-operator-install.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/otel-operator-install.yaml
+  - description: "otel collector deployment"
+    source: ./collector-deployment.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/collector-deployment.yaml
+  - description: "otel collector daemonset"
+    source: ./collector-daemonset.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/collector-daemonset.yaml
+  - description: "otel collector daemonset ServiceAccount"
+    source: ./daemonset-sa.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/collector-daemonset-sa.yaml
+  - description: "otel collector deployment ServiceAccount"
+    source: ./deployment-sa.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/collector-deployment-sa.yaml
+
+registries:
+  config: ../registries.yaml
+
+options:
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: false

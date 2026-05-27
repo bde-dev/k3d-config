@@ -1,0 +1,62 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: my-deployment
+spec:
+  mode: deployment
+  config:
+    receivers:
+      k8s_cluster:
+        auth_type: 'serviceAccount'
+        node_conditions_to_report:
+          - Ready
+          - MemoryPressure
+        allocatable_types_to_report:
+          - cpu
+          - memory
+
+      k8sobjects:
+        auth_type: 'serviceAccount'
+        objects:
+          - name: pods
+            mode: pull
+          - name: events
+            mode: pull
+          - name: nodes
+            mode: pull
+          - name: jobs
+            mode: pull
+          - name: cronjobs
+            mode: pull
+          - name: deployments
+            mode: pull
+          - name: services
+            mode: pull
+          - name: statefulsets
+            mode: pull
+          - name: replicasets
+            mode: pull
+          - name: daemonsets
+            mode: pull
+          - name: namespaces
+            mode: pull
+
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+    exporters:
+      debug:
+        verbosity: detailed
+
+    service:
+      pipelines:
+        logs:
+          receivers: [k8sobjects]
+          exporters: [debug]
+        metrics:
+          receivers: [k8s_cluster, otlp]
+          exporters: [debug]

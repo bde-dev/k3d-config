@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-deployment-collector
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: my-deployment-collector-cr
+rules:
+  - apiGroups: ['']
+    resources:
+      - events
+      - namespaces
+      - namespaces/status
+      - nodes
+      - nodes/spec
+      - pods
+      - pods/status
+      - replicationcontrollers
+      - replicationcontrollers/status
+      - resourcequotas
+      - services
+    verbs: ['get', 'watch', 'list']
+
+  - apiGroups: ['apps']
+    resources:
+      - daemonsets
+      - deployments
+      - replicasets
+      - statefulsets
+    verbs: ['get', 'watch', 'list']
+
+  - apiGroups: ['extensions']
+    resources:
+      - daemonsets
+      - deployments
+      - replicasets
+    verbs: ['get', 'watch', 'list']
+
+  - apiGroups: ['batch']
+    resources:
+      - jobs
+      - cronjobs
+    verbs: ['get', 'watch', 'list']
+
+  - apiGroups: ['autoscaling']
+    resources:
+      - horizontalpodautoscalers
+    verbs: ['get', 'watch', 'list']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: my-deployment-collector-crb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: my-deployment-collector-cr
+subjects:
+  - kind: ServiceAccount
+    name: my-deployment-collector
+    namespace: default

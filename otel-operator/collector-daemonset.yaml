@@ -1,0 +1,68 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: my-daemonset
+spec:
+  mode: daemonset
+
+  volumes:
+    - name: hostfs
+      hostPath:
+        path: /
+
+  volumeMounts:
+    - name: hostfs
+      mountPath: /hostfs
+      readOnly: true
+
+  env:
+    - name: K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+
+  config:
+    receivers:
+      hostmetrics:
+        root_path: /hostfs
+        scrapers:
+          cpu:
+          disk:
+          load:
+          filesystem:
+          memory:
+          network:
+          paging:
+          processes:
+          process:
+          system:
+
+      kubeletstats:
+        auth_type: 'serviceAccount'
+        endpoint: "${env:K8S_NODE_NAME}:10250"
+        insecure_skip_verify: true
+        metric_groups:
+          - node
+          - pod
+          - container
+
+    exporters:
+      otlp_grpc:
+        endpoint: http://my-deployment-collector:4317
+        tls:
+          insecure: true
+
+      otlp_http:
+        endpoint: http://my-deployment-collector:4318
+        tls:
+          insecure: true
+
+      debug:
+        verbosity: detailed
+
+    service:
+      pipelines:
+        metrics:
+          receivers: [hostmetrics, kubeletstats]
+          processors: []
+          exporters: [debug, otlp_grpc, otlp_http]
