@@ -50,12 +50,12 @@ spec:
 
     exporters:
       debug:
-        verbosity: detailed
+        verbosity: basic
 
     service:
       pipelines:
         logs:
-          receivers: [k8sobjects]
+          receivers: [k8sobjects, otlp]
           exporters: [debug]
         metrics:
           receivers: [k8s_cluster, otlp]

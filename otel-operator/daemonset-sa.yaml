@@ -9,7 +9,10 @@ metadata:
   name: my-daemonset-collector-cr
 rules:
   - apiGroups: ['']
-    resources: ['nodes/stats']
+    resources: ['nodes', 'nodes/stats', 'namespaces', 'pods']
+    verbs: ['get', 'watch', 'list']
+  - apiGroups: ['apps']
+    resources: ['replicasets']
     verbs: ['get', 'watch', 'list']
 ---
 apiVersion: rbac.authorization.k8s.io/v1
