@@ -17,22 +17,22 @@ ports:
 
 files:
   - description: "otel namespace"
-    source: ./namespace.yaml
-    destination: /var/lib/rancher/k3s/server/manifests/namespace.yaml
+    source: ./otel-operator/otel-operator-namespace.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/otel-operator-namespace.yaml
   - description: "otel-operator installation manifest"
-    source: ./otel-operator-install.yaml
+    source: ./otel-operator/otel-operator-install.yaml
     destination: /var/lib/rancher/k3s/server/manifests/otel-operator-install.yaml
   - description: "otel collector deployment"
-    source: ./collector-deployment.yaml
+    source: ./otel-operator/otel-operator-collector-deployment.yaml
     destination: /var/lib/rancher/k3s/server/manifests/collector-deployment.yaml
   - description: "otel collector daemonset"
-    source: ./collector-daemonset.yaml
+    source: ./otel-operator/otel-operator-collector-daemonset.yaml
     destination: /var/lib/rancher/k3s/server/manifests/collector-daemonset.yaml
   - description: "otel collector daemonset ServiceAccount"
-    source: ./daemonset-sa.yaml
+    source: ./otel-operator/otel-operator-collector-daemonset-sa.yaml
     destination: /var/lib/rancher/k3s/server/manifests/collector-daemonset-sa.yaml
   - description: "otel collector deployment ServiceAccount"
-    source: ./deployment-sa.yaml
+    source: ./otel-operator/otel-operator-collector-deployment-sa.yaml
     destination: /var/lib/rancher/k3s/server/manifests/collector-deployment-sa.yaml
 
 registries:
