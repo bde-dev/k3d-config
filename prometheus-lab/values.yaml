@@ -1,0 +1,20 @@
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeProxy:
+  enabled: false
+
+grafana:
+  adminPassword: prom-operator
+
+prometheus:
+  prometheusSpec:
+    retention: 1d
+    enableAdminAPI: true
+    resources:
+      requests:
+        memory: 400Mi
+        cpu: 100m

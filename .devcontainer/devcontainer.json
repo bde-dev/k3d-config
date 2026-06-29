@@ -12,7 +12,8 @@
     4002,
     4003,
     4004,
-    4005
+    4005,
+    4006
   ],
   "portsAttributes": {
     "4001": {
@@ -29,6 +30,9 @@
     },
     "4005": {
       "label": "otel-operator"
+    },
+    "4006": {
+      "label": "prometheus-lab"
     }
   }
 }

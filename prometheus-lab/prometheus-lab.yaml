@@ -1,0 +1,34 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+
+metadata:
+  name: prometheus-lab
+
+image: docker.io/rancher/k3s:v1.31.5-k3s1
+network: prometheus-lab-network
+
+ports:
+  - port: 4006:80
+    nodeFilters:
+      - loadbalancer
+
+files:
+  - description: "prometheus-lab namespace"
+    source: ./namespace.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/namespace.yaml
+
+  - description: "prometheus-lab install"
+    source: ./prometheus-lab-install.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/prometheus-lab-install.yaml
+
+  - description: "prometheus-lab ingress"
+    source: ./ingress.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/ingress.yaml
+
+registries:
+  config: ../registries.yaml
+
+options:
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: false
