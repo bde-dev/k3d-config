@@ -7,3 +7,7 @@
 ```bash
 cd otel-operator && helm template otel-operator open-telemetry/opentelemetry-operator --namespace opentelemetry-operator-system --create-namespace --values otel-operator-values.yaml > otel-operator-install.yaml
 ```
+
+```bash
+cd kube-prometheus-stack && helm template kube-prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --include-crds --values kps-values.yaml > kps-install.yaml
+```

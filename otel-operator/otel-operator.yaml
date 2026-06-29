@@ -16,6 +16,7 @@ ports:
       - loadbalancer
 
 files:
+  # Otel operator files
   - description: "otel namespace"
     source: ./otel-operator/otel-operator-namespace.yaml
     destination: /var/lib/rancher/k3s/server/manifests/otel-operator-namespace.yaml
@@ -34,6 +35,13 @@ files:
   - description: "otel collector deployment ServiceAccount"
     source: ./otel-operator/otel-operator-collector-deployment-sa.yaml
     destination: /var/lib/rancher/k3s/server/manifests/collector-deployment-sa.yaml
+    # kube-prometheus-stack files
+  - description: "kps namespace"
+    source: ./kube-prometheus-stack/kps-namespace.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/kps-namespace.yaml
+  - description: "kps installation manifest"
+    source: ./kube-prometheus-stack/kps-install.yaml
+    destination: /var/lib/rancher/k3s/server/manifests/kps-install.yaml
 
 registries:
   config: ../registries.yaml

@@ -1,0 +1,70 @@
+# kube-prometheus-stack 86.1.0 — minimal-Prometheus first slice
+#
+# Goal: render ONLY the prometheus-operator + a Prometheus CR + the CRDs.
+# Everything else (Alertmanager, Grafana, KSM, NE, all scrape ServiceMonitors,
+# all default recording/alerting rules) is disabled to keep the manifest small
+# and the system fully understood before we add pieces back.
+#
+# Next slice candidates (don't add yet — one at a time):
+#   - enable OTLP receiver on the Prometheus CR + wire gateway exporter
+#   - re-enable kube-state-metrics + its ServiceMonitor
+#   - re-enable Grafana with one panel
+#   - re-enable kube-prometheus-stack's default rules subset that survives translation
+
+# --- Default PrometheusRule resources -----------------------------------------
+# Without this, the chart renders ~35 PrometheusRule resources covering kubelet,
+# kube-apiserver, node-exporter, etc. None of them match our OTel-fed series
+# yet (see voize.de findings in MEMORY/WORK/...kps-translation/PRD.md), so
+# starting clean is the simplest path. Re-enable selectively later.
+defaultRules:
+  create: false
+
+# --- Components we are NOT installing in this slice --------------------------
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: false
+
+kubeStateMetrics:
+  enabled: false        # disables the kps-side ServiceMonitor + rules
+kube-state-metrics:
+  enabled: false        # disables the KSM sub-chart workload itself
+
+nodeExporter:
+  enabled: false        # disables the kps-side ServiceMonitor + rules
+prometheus-node-exporter:
+  enabled: false        # disables the node-exporter sub-chart workload
+
+# --- Default ServiceMonitors we are NOT installing ---------------------------
+# k3s embeds apiserver/scheduler/CM/proxy/etcd in a single binary and doesn't
+# expose them on the Service shapes these monitors expect — they'd always be
+# Down. kubelet metrics are already covered by our OTel kubeletstats receiver.
+kubeApiServer:
+  enabled: false
+kubelet:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+kubeEtcd:
+  enabled: false
+coreDns:
+  enabled: false
+
+# --- Components we ARE installing --------------------------------------------
+# prometheusOperator and prometheus are enabled by default — listed here only
+# to make the inclusions explicit. No spec overrides yet; chart defaults give
+# us a single-replica Prometheus with emptyDir storage. Fine for k3d.
+prometheusOperator:
+  enabled: true
+prometheus:
+  enabled: true
+
+# Chart-shipped CRDs — needed for the Prometheus CR (and ServiceMonitor/PodMonitor/
+# PrometheusRule CRs we'll use in later slices).
+crds:
+  enabled: true
